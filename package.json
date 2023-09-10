@@ -1,9 +1,8 @@
 {
   "name": "labecommerce-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "��#\u0000 \u0000l\u0000a\u0000b\u0000e\u0000c\u0000o\u0000m\u0000m\u0000e\u0000r\u0000c\u0000e\u0000-\u0000b\u0000a\u0000c\u0000k\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
   "main": "index.js",
-
   "scripts": {
     "start": "tsc  &&  node ./build/index.js"
   },
@@ -12,5 +11,13 @@
   "devDependencies": {
     "@types/node": "^20.5.7",
     "typescript": "^5.2.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolinabispo/labecommerce-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carolinabispo/labecommerce-backend/issues"
+  },
+  "homepage": "https://github.com/carolinabispo/labecommerce-backend#readme"
 }
