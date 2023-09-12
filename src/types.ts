@@ -3,7 +3,7 @@ export type TUsers = {
   name: string;
   email: string;
   password: string;
-  createdAt: string;
+  createdAt?: string;
   // createdAtDate: Date
 };
 

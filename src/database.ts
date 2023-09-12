@@ -58,6 +58,7 @@ export function createProduct(id: string, name: string, price: number,descriptio
   const newProduct: TProducts = { id, name, price, description, imageUrl };
   products.push(newProduct);
   
+
   return "Produto cadastrado com sucesso";
 }
 
