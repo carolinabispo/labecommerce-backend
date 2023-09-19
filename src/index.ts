@@ -108,3 +108,52 @@ app.post("/products", (req: Request, res: Response) => {
   products.push(newProduct);
   res.status(201).send("Produto cadastrado com sucesso");
 });
+
+//------------ função de deletar usuario -------------------
+
+app.delete("/users/:id", (req: Request, res: Response) => {
+  const id = req.params.id;
+  const indexToDelete = users.findIndex((user) => user.id === id);
+  if (indexToDelete >= 0) {
+    users.splice(indexToDelete, 1);
+  } else {
+    console.log("deu ruim, nao deletou nada");
+  }
+  res.status(200).send({ message: "User apagado com sucesso!" });
+});
+
+//--------------- função de deletar product -----------------
+app.delete("/products/:id", (req: Request, res: Response) => {
+  const id = req.params.id;
+  const indexToDelete = products.findIndex((product) => product.id === id);
+  if (indexToDelete >= 0) {
+    products.splice(indexToDelete, 1);
+  } else {
+    console.log("deu ruim, nao deletou nada");
+  }
+  res.status(200).send({ message: "Produto apagado com sucesso!" });
+});
+
+//---------- função para editar product -----------------
+
+app.put("/products/:id", (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const newId = req.body.id as string | undefined;
+  const newProductName = req.body.name as string | undefined;
+  const newPrice = req.body.price as number | undefined;
+  const newDescription = req.body.description as string | undefined;
+  const newImageUrl = req.body.imahge as string | undefined;
+
+  const newProduct = products.find((item) => item.id === id);
+
+  if (newProduct) {
+    newProduct.id = newId || newProduct.id;
+    newProduct.name = newProductName || newProduct.name;
+    newProduct.price = newPrice || newProduct.price;
+    newProduct.imageUrl = newImageUrl || newProduct.imageUrl;
+    newProduct.description = newDescription || newProduct.description;
+  }
+
+  res.status(200).send({ message: "alteração feita com sucesso" });
+});
