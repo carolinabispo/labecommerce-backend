@@ -30,7 +30,7 @@ export const products: TProducts[] = [{
 {
     id: "prod002",
     name: "Monitor",
-    price: 250,
+    price: 900,
     description: "Monitor LED Full HD 24 polegadas",
     imageUrl: "https://picsum.photos/seed/Monitor/400",
 }
