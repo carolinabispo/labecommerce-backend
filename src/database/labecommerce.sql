@@ -9,6 +9,8 @@ CREATE TABLE
         created_at TEXT NOT NULL
     );
 
+DROP TABLE users
+
 SELECT * FROM users 
 
 INSERT INTO
@@ -20,44 +22,47 @@ INSERT INTO
         created_at
     )
 VALUES (
-        'u005',
+        'u001',
         'Luna',
         'luna@email.com',
         'luna123',
         datetime('now')
-    );
-
-INSERT INTO
-    users(
-        id,
-        name,
-        email,
-        password,
-        created_at
-    )
-VALUES (
-        'u006',
+    ),(
+        'u002',
         'Breno',
         'breno@email.com',
         'breno',
         datetime('now')
-    );
-
-INSERT INTO
-    users(
-        id,
-        name,
-        email,
-        password,
-        created_at
-    )
-VALUES (
+    ),(
+        'u003',
+        'Laercio',
+        'laercio@email.com',
+        'laercio',
+        datetime('now')
+    ), (
         'u004',
         'Lyandra',
         'lyandra@email.com',
         'lyandra123',
         datetime('now')
     );
+
+-- INSERT INTO
+--     users(
+--         id,
+--         name,
+--         email,
+--         password,
+--         created_at
+--     )
+-- VALUES (
+--         'u002',
+--         'Breno',
+--         'breno@email.com',
+--         'breno',
+--         datetime('now')
+--     );
+
 
 --  -------------------------- criando produtos
 
@@ -100,3 +105,42 @@ description ='descrição do produto 6',
 image_url = 'novaimg.url'
 WHERE id ='prod006'
 
+
+--criando tabela de pedidos
+
+CREATE TABLE 
+    purchases (
+        purchase_id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        created_at TEXT NOT NULL,
+        buyer_id TEXT UNIQUE NOT NULL,
+        Foreign Key (buyer_id) REFERENCES users(id)
+    );
+
+DROP TABLE purchases;
+
+SELECT * FROM purchases;
+
+INSERT INTO purchases VALUES
+ ('pur001','Breno', 500, datetime ('now'),'u001'),
+ ('pur002','Luna', 600, datetime('now'),'u002'),
+ ('pur003','Laercio', 400, datetime('now'),'u003');
+
+ UPDATE purchases
+ SET total_price = 700 WHERE buyer_id = 'u001';
+
+-- junção das tabelas
+
+SELECT * FROM purchases INNER JOIN users
+
+SELECT * FROM users INNER JOIN purchases ON purchases.buyer_id = users.id
+
+SELECT purchases.purchase_id, purchases.buyer_id, purchases.buyer, users.email, users.id,purchases.total_price, purchases.created_at FROM purchases
+INNER JOIN users on users.id = purchases.buyer_id
+
+
+
+ 
+
+ 
