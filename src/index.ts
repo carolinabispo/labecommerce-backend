@@ -342,24 +342,7 @@ await db("users").del().where({ id: idToDelete })
 
 
 
-    // validação: checar se o item existe antes de deletá-lo
-  //   const [ users ] = await db.raw(`
-  //     SELECT * FROM users
-  //     WHERE id = "${idToDelete}";
-  //   `) // desestruturamos para encontrar o primeiro item do array
-
-  //   if (!users) {
-  //     res.status(404)
-  //     throw new Error("'id' não encontrada")
-  //   }
-
-  //   // se chegou até aqui é porque podemos deletar
-  //   await db.raw(`
-  //     DELETE FROM users
-  //     WHERE id = "${idToDelete}";
-  //   `)
-
-  //   res.status(200).send({ message: "User deletado com sucesso"})
+    
     
   } catch (error) {
     if (error instanceof Error) {
