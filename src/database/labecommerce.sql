@@ -1,155 +1,127 @@
--- Active: 1695689491404@@127.0.0.1@3306
+-- Active: 1697136108840@@127.0.0.1@3306
+-- TABELA DE USUARIOS
+CREATE TABLE users (
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
+);
 
-CREATE TABLE
-    users (
-        id TEXT PRIMARY KEY UNIQUE NOT NULL,
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        created_at TEXT NOT NULL
-    );
+-- SELECIONA TODOS OS USUARIOS
+SELECT *FROM users;
 
-DROP TABLE users
+-- EXCLUI A TABELA DOS USUARIOS
+DROP TABLE users;
 
-SELECT * FROM users 
+-- INSERIR OS NOVOS USUARIOS
+INSERT INTO users (id, name, email, password) VALUES
+('u003', 'Shoyo', 'shoyo@email.com', 'whiscassache'),
+('u004', 'Biju', 'biju@email.com', 'boladepelo'),
+('u005', 'Bruno', 'bruno@email.com', 'meumaridolindo'),
+('u006', 'Carol', 'carol@email.com', 'novaeuropa');
 
-INSERT INTO
-    users(
-        id,
-        name,
-        email,
-        password,
-        created_at
-    )
-VALUES (
-        'u001',
-        'Luna',
-        'luna@email.com',
-        'luna123',
-        datetime('now')
-    ),(
-        'u002',
-        'Breno',
-        'breno@email.com',
-        'breno',
-        datetime('now')
-    ),(
-        'u003',
-        'Laercio',
-        'laercio@email.com',
-        'laercio',
-        datetime('now')
-    ), (
-        'u004',
-        'Lyandra',
-        'lyandra@email.com',
-        'lyandra123',
-        datetime('now')
-    );
+-- TABELA DE PRODUTOS
+CREATE TABLE products (
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT NOT NULL
+);
 
+-- SELECIONA TODOS OS PRODUTOS
+SELECT *FROM products;
 
---  -------------------------- criando produtos
+-- EXCLUI TABELA DE PRODUTOS
+DROP TABLE products;
 
-CREATE TABLE
-    products (
-        id TEXT PRIMARY KEY NOT NULL UNIQUE,
-        name TEXT NOT NULL,
-        price REAL NOT NULL,
-        description TEXT NOT NULL,
-        image_url TEXT NOT NULL
-    );
+-- INSERE NOVOS PRODUTOS
+INSERT INTO products (id, name, price, description, image_url) VALUES
+('prod003', 'robo aspirador', 1234.00, 'Robô Aspirador de Pó KaBuM! Smart 700, Mapeamento IR 360º, Controle via Aplicativo, Google Assistant e Alexa', 'https://images.kabum.com.br/produtos/fotos/155444/aspirador-de-po-robo-ir-360-kabum-smart-700-preto_1628768893_m.jpg'),
+('prod004', 'placa de video gamer', 1800.00, 'Placa de Vídeo MSI NVIDIA GeForce RTX 3060 Ventus', 'https://images7.kabum.com.br/produtos/fotos/384627/placa-de-video-msi-nvidia-geforce-rtx-3060-ventus-2x-12gb-gddr6-dlss-ray-tracing-912-v397-272_1663850312_m.jpg'),
+('prod005', 'playstation 5', 3500.00, 'Console Sony Playstation 5, Edição Digital', 'https://images.kabum.com.br/produtos/fotos/238670/console-sony-playstation-5-edicao-digital_1634132113_m.jpg'),
+('prod006', 'Macbook Pro Apple 16', 12034.00, 'macbook pro de 16 polegadas', 'https://images2.kabum.com.br/produtos/fotos/sync_mirakl/479192/Macbook-Pro-Apple-16-Chip-M1-Max-32GB-SSD-1TB-Cinza-Espacial-Mk1a3bz-A_1694541516_m.jpg'),
+('prod007', 'Samsung Galaxy Z Flip5', 6234.00, 'Smartphone Samsung Galaxy Z Flip5 512gb 5g Tela Dobrável 6.7 Câmera Dupla 12mp Câmera Selfie 10mp Dual Chip Android 13, Grafite', 'https://images.kabum.com.br/produtos/fotos/magalu/480251/Smartphone-Samsung-Z-Flip-5-512GB-Grafite-5G-Snapdragon-8GB-RAM-6-7-C-m-Dupla-Selfie-10MP-Dual-Chip_1692195175_m.jpg'),
+('prod008', 'XBOX 360 one', 2600.00, 'Espaço de armazenamento: 512 Gb Conexões: HDMI-In/Out, Portas usb, Wi-Fi embutido Tensão: Bivolt', 'https://images-americanas.b2w.io/produtos/3052435356/imagens/console-xbox-serie-s-ssd512gb-1controle-rrs-00006/3052435364_1_xlarge.jpg');
 
-DROP Table products
-
-SELECT * FROM products 
-
-INSERT  INTO products (id,name,price,description,image_url) 
-VALUES('prod001','Iphone 14 pro max',9500,'Uma nova forma de interação no iPhone.','https://images.kabum.com.br/produtos/fotos/393973/iphone-14-pro-max-512gb-preto-espacial-tela-6-7-camera-tripla-12mp-selfie-12mp-mqaf3be-a_1666098428_gg.jpg');
-
-INSERT  INTO products (id,name,price,description,image_url)  VALUES('prod002','Processador AMD Ryzen 5 4600G',630,'Com os processadores AMD Ryzen para desktop, você está sempre na frente.','https://images.kabum.com.br/produtos/fotos/333145/processador-amd-ryzen-5-4600g-cache-11mb-3-7ghz-4-2ghz-max-turbo-am4-video-integrado-100-100000147box_1653338731_gg.jpg');
-
-INSERT  INTO products (id,name,price,description,image_url)  VALUES('prod003','Placa de Vídeo gamer RTX 3060 Ventus 2X MSI NVIDIA GeForce',1700,'Jogue os jogos mais recentes usando o poder da Ampere — a arquitetura RTX de 2ª geração da NVIDIA','https://images.kabum.com.br/produtos/fotos/384627/placa-de-video-msi-nvidia-geforce-rtx-3060-ventus-2x-12gb-gddr6-dlss-ray-tracing-912-v397-272_1663850312_gg.jpg');
+-- BUSCA POR NOME GAME DOS PRODUTOS
+SELECT * FROM products
+WHERE name LIKE '%gamer%';
 
 
-INSERT  INTO products (id,name,price,description,image_url)  VALUES('prod004','Roteador Tp-Link Archer C50w Wisp Preset',150,'o roteador tp-link archer c50w é a escolha ideal para quem busca uma conexão wi-fi de alta velocidade e desempenho confiável','https://images.kabum.com.br/produtos/fotos/sync_mirakl/485613/Roteador-Tp-Link-Archer-C50w-Wisp-Preset-Ac1200-Dual-Band-4-Antenas-V-6-8-_1694459323_gg.jpg');
+-- DELETAR USER BY ID
+DELETE FROM users
+WHERE id = 'u003';
+
+-- DELETAR PRODUCT BY ID
+DELETE FROM products
+WHERE id = 'prod007';
+
+-- EDITAR PRODUCT BY ID
+UPDATE products
+SET 
+  name = 'xxxxxxxxxxxxx',
+  price = 699.79,
+  description = 'Descrição do Produto 7',
+  image_url = 'novaimagemurl.jpg'
+WHERE id = 'prod005';
 
 
-INSERT  INTO products (id,name,price,description,image_url)  VALUES('prod005','Cooler Processador Deepcool Gammaxx Ag400',210,'Ag400 bk argbo deepcool ag400 bk argb é um cooler de cpu de torre única de 120 mm que se baseia em nosso legado para desempenho de resfriamento de alta qualidade, mas simplificado para um pacote simplificado e eficiente.','https://images.kabum.com.br/produtos/fotos/sync_mirakl/483368/Cooler-Processador-Deepcool-Gammaxx-Ag400-ARGB-120mm-Preto_1694452090_gg.jpg');
+-- TABELA DE PEDIDOS
 
-
-
-SELECT * FROM products WHERE name LIKE '%gamer%'
-
--- DELETE from users WHERE id = 'u005';
-
--- DELETE from products WHERE id = 'prod005';
-
--- UPDATE products SET name = '***********',
--- price = 600,
--- description ='descrição do produto 6',
--- image_url = 'novaimg.url'
--- WHERE id ='prod006'
-
-
---criando tabela de pedidos
-
-CREATE TABLE 
-    purchases (
-        purchase_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-        buyer TEXT NOT NULL,
-        total_price REAL NOT NULL,
-        created_at TEXT NOT NULL,
-        buyer_id TEXT UNIQUE NOT NULL,
-        Foreign Key (buyer_id) REFERENCES users(id)
-            ON UPDATE CASCADE -- efeito cascata ao atualizar id na tabela users
-            ON DELETE CASCADE
-    );
+CREATE TABLE purchases (
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    buyer_id TEXT NOT NULL,
+    total_price REAL NOT NULL,
+    product_id TEXT, -- Adicionando a coluna product_id
+    product_description TEXT,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+    FOREIGN KEY (buyer_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    ON UPDATE CASCADE, -- efeito cascata ao atualizar id na tabela users
+		ON DELETE CASCADE -- efeito cascata ao atualizar id na tabela users
+);
 
 DROP TABLE purchases;
 
+-- INTRODUZIR PEDIDO
+INSERT INTO purchases (id, buyer_id, total_price, product_id, product_description)
+VALUES
+('p001', 'u003', 100,'prod003', 'Robô Aspirador de Pó KaBuM! Smart 700, Mapeamento IR 360º, Controle via Aplicativo, Google Assistant e Alexa'),
+('p002', 'u004', 300, 'prod003','Robô Aspirador de Pó KaBuM! Smart 700, Mapeamento IR 360º, Controle via Aplicativo, Google Assistant e Alexa'),
+('p003', 'u005', 110, 'prod003', 'Robô Aspirador de Pó KaBuM! Smart 700, Mapeamento IR 360º, Controle via Aplicativo, Google Assistant e Alexa'),
+('p004', 'u006', 200,'prod003', 'Robô Aspirador de Pó KaBuM! Smart 700, Mapeamento IR 360º, Controle via Aplicativo, Google Assistant e Alexa');
+
 SELECT * FROM purchases;
 
-INSERT INTO purchases VALUES
- ('pur001','Breno', 500, datetime ('now'),'u001'),
- ('pur002','Luna', 600, datetime('now'),'u002'),
- ('pur003','Laercio', 400, datetime('now'),'u003');
+-- EDITAR PEDIDO
+UPDATE purchases
+SET total_price = 700 WHERE buyer_id = 'u003'
 
+-- JUNÇÃO DAS TABELAS
 
+SELECT purchases.id AS idCompra, users.id AS idUser, users.name, users.email, purchases.total_price, purchases.created_at FROM purchases
+INNER JOIN users ON users.id = purchases.buyer_id;
 
- UPDATE purchases
- SET total_price = 800 WHERE buyer_id = 'u001';
+-- CRIANDO TABELA DE RELAÇÕES 
 
--- junção das tabelas
-
-SELECT * FROM purchases INNER JOIN users
-
-SELECT * FROM users INNER JOIN purchases ON purchases.buyer_id = users.id
-
-SELECT purchases.purchase_id, purchases.buyer_id, purchases.buyer, users.email, users.id,purchases.total_price, purchases.created_at FROM purchases
-INNER JOIN users on users.id = purchases.buyer_id
-
---tabela de relação entre purchase e products
- CREATE TABLE  purchases_products (
-    purchase_id TEXT NOT NULL,
-    product_id TEXT NOT NULL,
-    quantity INTEGER NOT NULL ,
-    FOREIGN KEY (product_id) REFERENCES products(id),  -- Adicione uma vírgula aqui
-    FOREIGN KEY (purchase_id) REFERENCES purchases(purchase_id)
-        ON UPDATE CASCADE -- efeito cascata ao atualizar id na tabela users
-        ON DELETE CASCADE
+CREATE TABLE purchases_products (
+  purchase_id TEXT NOT NULL,
+  product_id TEXT NOT NULL,
+  quantity INTEGER NOT NULL,
+  FOREIGN KEY (purchase_id) REFERENCES purchases (id),
+  FOREIGN KEY (product_id) REFERENCES products (id),
+  ON UPDATE CASCADE, -- efeito cascata ao atualizar id na tabela users
+	ON DELETE CASCADE -- efeito cascata ao atualizar id na tabela users
 );
-DROP TABLE purchases_products
 
-SELECT * from purchases_products
+INSERT INTO purchases_products VALUES
+('p001', 'prod003', 1),
+('p001', 'prod005', 1 ),
+('p002', 'prod007', 2);
 
-INSERT INTO purchases_products (product_id, purchase_id, quantity)
-VALUES ('prod002','pur001',3), ('prod001', 'pur002',1), ('prod004', 'pur003',2)
-
---  purchases_products, purchases e products).
-
-SELECT purchases_products.*, purchases.*, products.*
+SELECT *
 FROM purchases_products
-INNER JOIN products
-ON purchases_products.product_id = products.id
-INNER JOIN purchases
-ON purchases_products.purchase_id = purchases.purchase_id
+INNER JOIN purchases ON purchases_products.purchase_id = purchases.id
+INNER JOIN products ON purchases_products.product_id = products.id;
