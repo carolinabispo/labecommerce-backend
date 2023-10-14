@@ -1,5 +1,4 @@
--- Active: 1697136108840@@127.0.0.1@3306
--- TABELA DE USUARIOS
+-- Active: 1697323094466@@127.0.0.1@3306
 CREATE TABLE users (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     name TEXT NOT NULL,
@@ -10,9 +9,6 @@ CREATE TABLE users (
 
 -- SELECIONA TODOS OS USUARIOS
 SELECT *FROM users;
-
--- EXCLUI A TABELA DOS USUARIOS
-DROP TABLE users;
 
 -- INSERIR OS NOVOS USUARIOS
 INSERT INTO users (id, name, email, password) VALUES
@@ -32,9 +28,6 @@ CREATE TABLE products (
 
 -- SELECIONA TODOS OS PRODUTOS
 SELECT *FROM products;
-
--- EXCLUI TABELA DE PRODUTOS
-DROP TABLE products;
 
 -- INSERE NOVOS PRODUTOS
 INSERT INTO products (id, name, price, description, image_url) VALUES
@@ -78,12 +71,11 @@ CREATE TABLE purchases (
     product_description TEXT,
     created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
     FOREIGN KEY (buyer_id) REFERENCES users(id),
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    ON UPDATE CASCADE, -- efeito cascata ao atualizar id na tabela users
+    FOREIGN KEY (product_id) REFERENCES products(id)
+    ON UPDATE CASCADE -- efeito cascata ao atualizar id na tabela users
 		ON DELETE CASCADE -- efeito cascata ao atualizar id na tabela users
 );
 
-DROP TABLE purchases;
 
 -- INTRODUZIR PEDIDO
 INSERT INTO purchases (id, buyer_id, total_price, product_id, product_description)
@@ -111,8 +103,8 @@ CREATE TABLE purchases_products (
   product_id TEXT NOT NULL,
   quantity INTEGER NOT NULL,
   FOREIGN KEY (purchase_id) REFERENCES purchases (id),
-  FOREIGN KEY (product_id) REFERENCES products (id),
-  ON UPDATE CASCADE, -- efeito cascata ao atualizar id na tabela users
+  FOREIGN KEY (product_id) REFERENCES products (id)
+  ON UPDATE CASCADE -- efeito cascata ao atualizar id na tabela users
 	ON DELETE CASCADE -- efeito cascata ao atualizar id na tabela users
 );
 
