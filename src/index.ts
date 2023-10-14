@@ -12,7 +12,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { db } from "./database/knex";
 import knex, { QueryBuilder } from "knex";
-import { error } from "console";
+import { error, log } from "console";
 
 const app = express();
 app.use(express.json());
@@ -60,9 +60,11 @@ console.log(searchResult);
 app.get("/users", async (req: Request, res: Response) => {
   try {
     // const resultUsers: TUsers[] = users;
-    const resultUsers = await db.raw(`SELECT * FROM users`);
+    // const resultUsers = await db.raw(`SELECT * FROM users`);
 
-    res.status(200).send(resultUsers);
+    // res.status(200).send(resultUsers);
+    const result = await db.select("*").from("users");
+    res.status(200).send(result);
   } catch (error) {
     if (req.statusCode === 200) {
       res.status(500);
@@ -80,8 +82,11 @@ app.get("/products", async (req: Request, res: Response) => {
   try {
     // const resultProducts: TProducts[] = products;
     //refatorando com uso do db do knex
-    const resultProducts = await db.raw(`SELECT * FROM products`);
-    res.status(200).send(resultProducts);
+    // const resultProducts = await db.raw(`SELECT * FROM products`);
+    // res.status(200).send(resultProducts);
+
+    const result = await db.select("*").from("products");
+    res.status(200).send(result);
   } catch (error) {
     if (req.statusCode === 200) {
       res.status(500);
@@ -195,12 +200,20 @@ app.post("/users", async (req: Request, res: Response) => {
     //   res.status(200).send('Usuario cadastrado com sucesso')
     // }
 
-    const newUser = await db.raw(`INSERT INTO users
-    VALUES('${id}','${name}','${email}','${password}',datetime('now'))`);
+    // const newUser = await db.raw(`INSERT INTO users
+    // VALUES('${id}','${name}','${email}','${password}',datetime('now'))`);
+
+    const newUser = {
+      id: id,
+      name: name,
+      email: email,
+      password: password,
+    };
+    await db("users").insert(newUser);
 
     const [isID] = await db.raw(`SELECT id FROM users WHERE id ="${id}"`);
 
-    if (isID && isID.length > 0) {
+    if (!isID) {
       res.status(400);
       throw new Error("id invalido");
     } else {
@@ -223,12 +236,12 @@ app.post("/users", async (req: Request, res: Response) => {
 
 app.post("/products", async (req: Request, res: Response) => {
   try {
-    const { id, name, price, description, imageUrl } = req.body;
+    const { id, name, price, description, image_url } = req.body;
 
-    const newProduct = await db.raw(`INSERT INTO products
-VALUES('${id}','${name}','${price}','${description}','${imageUrl}')`);
+    //     const newProduct = await db.raw(`INSERT INTO products
+    // VALUES('${id}','${name}','${price}','${description}','${imageUrl}')`);
 
-    res.status(200).send({ message: "Produto cadastrado com sucesso" });
+    //     res.status(200).send({ message: "Produto cadastrado com sucesso" });
 
     // const newProduct: TProducts = {
     //   id,
@@ -254,12 +267,16 @@ VALUES('${id}','${name}','${price}','${description}','${imageUrl}')`);
       res.statusCode = 404;
       throw new Error("Descrição de produto invalida");
     }
-    if (typeof imageUrl !== "string") {
+    if (typeof image_url !== "string") {
       res.statusCode = 404;
       throw new Error("Url de imagem invalida");
     }
 
-    products.push(newProduct);
+    // products.push(newProduct);
+
+    const newProduct = { id, name, price, description, image_url };
+
+    await db("products").insert(newProduct);
     res.status(201).send("Produto cadastrado com sucesso");
   } catch (error) {
     if (error instanceof Error) {
@@ -273,7 +290,8 @@ VALUES('${id}','${name}','${price}','${description}','${imageUrl}')`);
 //--------------------- get all purchases ----------------------
 app.get("/allpurchase", async (req: Request, res: Response) => {
   try {
-    const resultPurchases = await db.raw(`SELECT * FROM purchases`);
+    // const resultPurchases = await db.raw(`SELECT * FROM purchases`);
+    const resultPurchases = await db.select("*").from("purchases");
     res.status(200).send(resultPurchases);
   } catch (error) {
     if (req.statusCode === 200) {
@@ -292,7 +310,7 @@ app.get("/allpurchase", async (req: Request, res: Response) => {
 
 app.post("/purchases", async (req: Request, res: Response) => {
   try {
-    const { id, buyer_id, total_price } = req.body;
+    const { id, buyer_id, total_price,product_id,product_description } = req.body;
 
     console.log("@===>>>", id, buyer_id, total_price);
 
@@ -311,11 +329,20 @@ app.post("/purchases", async (req: Request, res: Response) => {
       throw new Error("O campo do 'preço' é obrigatório");
     }
 
-    await db.raw(`INSERT INTO purchases
-    (id, buyer_id, total_price)
-    VALUES("${id}", "${buyer_id}", "${total_price}")`);
+    const newPurchase = {
+      id:id,
+      buyer_id:buyer_id,
+      total_price:total_price,
+      product_id:product_id,
+      product_description:product_description
+    }
 
-    res.status(200).send("Produto cadastrado com sucesso");
+    await db("purchases").insert(newPurchase)
+    // await db.raw(`INSERT INTO purchases
+    // (id, buyer_id, total_price,product_id, product_description)
+    // VALUES('${id}','${buyer_id}','${total_price},'${product_id},'${product_description}')`);
+
+    res.status(200).send("Pedido cadastrado com sucesso");
   } catch (error) {
     if (error instanceof Error) {
       res.send(error.message);
@@ -323,27 +350,49 @@ app.post("/purchases", async (req: Request, res: Response) => {
   }
 });
 
+//-----------------------get purchase by id --------------------------
+app.get("/purchases/:id", async (req, res) => {
+  try {
+    const purchaseById = req.params.id; // No need to cast to string, as it's already a string
+    console.log("HEREEEE", purchaseById);
+
+    const [result] = await db("*")
+      .from("purchases")
+      .where('id', purchaseById);
+
+    if (!result) {
+      res.status(400);
+      throw new Error("Purchase ID is invalid");
+    } else {
+      res.status(200).send(result);
+    }
+
+    console.log("=====>", result);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.send(error.message);
+    } else {
+      res.send("Error: The query must contain at least one character.");
+    }
+  }
+});
+
+
 //------------ função de deletar usuario -------------------
 
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/:id", async (req: Request, res: Response) => {
   try {
-    const idToDelete = req.params.id
+    const idToDelete = req.params.id;
 
-    const [users] = await db("users").where({id:idToDelete})
+    const [users] = await db("users").where({ id: idToDelete });
 
- if (!users) {
-            res.status(404)
-            throw new Error("'id' não encontrada")
-        }
-await db("users").del().where({ id: idToDelete })
+    if (!users) {
+      res.status(404);
+      throw new Error("'id' não encontrada");
+    }
+    await db("users").del().where({ id: idToDelete });
 
-        res.status(200).send({ message: "User deletado com sucesso" })
-				//-------------------------TA TUDO ERRAAADDDOOOOOOOOOOOOOOOOOOOOOOOOOOO------------
-
-
-
-    
-    
+    res.status(200).send({ message: "User deletado com sucesso" });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).send(error.message);
@@ -352,7 +401,6 @@ await db("users").del().where({ id: idToDelete })
     }
   }
 });
-
 
 //--------------- função de deletar product -----------------
 app.delete("/products/:id", (req: Request, res: Response) => {
