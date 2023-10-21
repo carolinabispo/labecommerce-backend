@@ -1,4 +1,4 @@
--- Active: 1697323094466@@127.0.0.1@3306
+-- Active: 1697670064741@@127.0.0.1@3306
 CREATE TABLE users (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     name TEXT NOT NULL,
@@ -107,6 +107,7 @@ CREATE TABLE purchases_products (
   ON UPDATE CASCADE -- efeito cascata ao atualizar id na tabela users
 	ON DELETE CASCADE -- efeito cascata ao atualizar id na tabela users
 );
+ 
 
 INSERT INTO purchases_products VALUES
 ('p001', 'prod003', 1),
